@@ -14,14 +14,14 @@ set(HUNTER_CONFIGURATION_TYPES Release CACHE STRING "Build type of Hunter packag
 set(HUNTER_JOBS_NUMBER 6 CACHE STRING "Number of parallel builds used by Hunter")
 set(HUNTER_USE_CACHE_SERVERS NO)
 HunterGate(
-  URL "https://github.com/cpp-pm/hunter/archive/v0.23.267.tar.gz"
-  SHA1 "9c5c7fa6e17c2ae15dd922184bc7c51235aaae70"
+  URL "https://github.com/cpp-pm/hunter/archive/v0.26.1.tar.gz"
+  SHA1 "e41ac7a18c49b35ebac99ff2b5244317b2638a65"
   LOCAL
 )
 
 
-project(evrprogpowminer)
-set(PROJECT_VERSION 1.3.0)
+project(satori_kawpowminer)
+set(PROJECT_VERSION 1.0.0)
 
 
 option(ETHASHCL "Build with OpenCL mining" ON)
@@ -103,7 +103,7 @@ if (APICORE)
 	add_subdirectory(libapicore)
 endif()
 
-add_subdirectory(evrprogpowminer)
+add_subdirectory(satori-kawpowminer)
 
 
 if(WIN32)

@@ -4,19 +4,19 @@ aux_source_directory(. SRC_LIST)
 
 include_directories(BEFORE ..)
 
-set(EXECUTABLE evrprogpowminer)
+set(EXECUTABLE satori-kawpowminer)
 
 file(GLOB HEADERS "*.h")
 
 add_executable(${EXECUTABLE} ${SRC_LIST} ${HEADERS})
 if(MSVC)
-	target_sources(${EXECUTABLE} PRIVATE evrprogpowminer.rc)
+	target_sources(${EXECUTABLE} PRIVATE satori-kawpowminer.rc)
 endif()
 
 hunter_add_package(CLI11)
 find_package(CLI11 CONFIG REQUIRED)
 
-target_link_libraries(evrprogpowminer PRIVATE ethcore poolprotocols devcore evrprogpowminer-buildinfo CLI11::CLI11 Boost::filesystem Boost::system)
+target_link_libraries(satori-kawpowminer PRIVATE ethcore poolprotocols devcore satori_kawpowminer-buildinfo CLI11::CLI11 Boost::filesystem Boost::system)
 
 if(ETHDBUS)
 	find_package(PkgConfig)
@@ -24,15 +24,15 @@ if(ETHDBUS)
 	pkg_check_modules(DBUS dbus-1)
 	include_directories(${DBUS_INCLUDE_DIRS})
 	link_directories(${DBUS_LIBRARY_DIRS})
-	target_link_libraries(evrprogpowminer PRIVATE ${DBUS_LIBRARIES})
+	target_link_libraries(satori-kawpowminer PRIVATE ${DBUS_LIBRARIES})
 endif()
 
 if(APICORE)
-	target_link_libraries(evrprogpowminer PRIVATE apicore)
+	target_link_libraries(satori-kawpowminer PRIVATE apicore)
 endif()
 
 include(GNUInstallDirs)
-install(TARGETS evrprogpowminer DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS satori-kawpowminer DESTINATION ${CMAKE_INSTALL_BINDIR})
 if(MSVC)
-    install(FILES $<TARGET_PDB_FILE:evrprogpowminer> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:satori-kawpowminer> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
 endif()

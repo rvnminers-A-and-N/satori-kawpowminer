@@ -30,19 +30,19 @@ __device__ __constant__ const uint32_t keccakf_rndc[24] = {
     0x0000800a, 0x8000000a, 0x80008081, 0x00008080, 0x80000001, 0x80008008
 };
 
-__device__ __constant__ const uint32_t evrmore_rndc[15] = {
-        0x00000045, //E
+__device__ __constant__ const uint32_t satori_kawpow[15] = {
+        0x00000072, //r (lowercase to match Ravencoin KAWPOW)
+        0x00000041, //A
         0x00000056, //V
-        0x00000052, //R
-        0x0000004D, //M
-        0x0000004F, //O
-        0x00000052, //R
         0x00000045, //E
-        0x0000002D, //-
-        0x00000050, //P
-        0x00000052, //R
+        0x0000004E, //N
+        0x00000043, //C
         0x0000004F, //O
-        0x00000047, //G
+        0x00000049, //I
+        0x0000004E, //N
+        0x0000004B, //K
+        0x00000041, //A
+        0x00000057, //W
         0x00000050, //P
         0x0000004F, //O
         0x00000057, //W
@@ -217,7 +217,7 @@ progpow_search(
 //       state[18] = 0x80008081;
         // 3rd apply evrmore input constraints
         for (int i = 10; i < 25; i++)
-            state[i] = evrmore_rndc[i-10];
+            state[i] = satori_kawpow[i-10];
 
         // Run intial keccak round
         keccak_f800(state);
@@ -283,7 +283,7 @@ progpow_search(
 //        state[24] = 0x80008081;
         // 3rd apply evrmore input constraints
         for (int i = 16; i < 25; i++)
-            state[i] = evrmore_rndc[i - 16];
+            state[i] = satori_kawpow[i - 16];
 
         // Run keccak loop
         keccak_f800(state);

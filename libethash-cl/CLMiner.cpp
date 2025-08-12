@@ -3,6 +3,8 @@
 /// @file
 /// @copyright GNU General Public License
 
+// Suppress Boost bind deprecation warning
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/dll.hpp>
 
 #include "CLMiner.h"

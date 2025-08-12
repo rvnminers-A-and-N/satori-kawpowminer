@@ -8,6 +8,11 @@
 #include <boost/bind.hpp>
 #include <boost/lockfree/queue.hpp>
 
+// OpenSSL 3.0 compatibility
+#if defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER >= 0x30000000L
+    #define OPENSSL_API_COMPAT 10101
+#endif
+
 #include <json/json.h>
 
 #include <libdevcore/FixedHash.h>

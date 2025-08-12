@@ -25,10 +25,16 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 
-	# declare Windows Vista requirement
+	# declare Windows version requirement based on compiler version
 	# undefine windows.h MAX & MIN macros because they conflict with std::min & std::max functions
 	# disable unsafe CRT Library functions warnings
-	add_definitions(/D_WIN32_WINNT=0x0600 /DNOMINMAX /D_CRT_SECURE_NO_WARNINGS)
+	if(MSVC_VERSION GREATER_EQUAL 1930)  # VS2022 or newer
+		# Windows 10/11 for modern builds
+		add_definitions(/D_WIN32_WINNT=0x0A00 /DNOMINMAX /D_CRT_SECURE_NO_WARNINGS)
+	else()
+		# Windows Vista for older builds (maintains compatibility)
+		add_definitions(/D_WIN32_WINNT=0x0600 /DNOMINMAX /D_CRT_SECURE_NO_WARNINGS)
+	endif()
 
     add_definitions(-DVC_EXTRALEAN)             # Faster headers
     add_definitions(-DWIN32_LEAN_AND_MEAN)      # Prevent winsock mismatch with Boost's
