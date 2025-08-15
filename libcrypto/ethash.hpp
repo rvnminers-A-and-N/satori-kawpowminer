@@ -9,7 +9,7 @@
 #define CRYPTO_ETHASH_HPP_
 
 #include <memory>
-#include <optional>
+#include "optional_compat.hpp"
 
 #include <intx/intx.hpp>
 
@@ -142,7 +142,7 @@ hash256 calculate_seed_from_epoch(uint32_t epoch_number) noexcept;
  * @param seed          The hash256 seed
  * @return              The epoch number if found.
  */
-std::optional<uint32_t> calculate_epoch_from_seed(const hash256& seed) noexcept;
+optional_t<uint32_t> calculate_epoch_from_seed(const hash256& seed) noexcept;
 
 /**
  * Calculates the epoch number provided a block number.

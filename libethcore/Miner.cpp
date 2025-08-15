@@ -17,7 +17,8 @@
 
 #include "Miner.h"
 
-namespace dev::eth
+namespace dev {
+namespace eth
 {
 unsigned Miner::s_dagLoadMode = 0;
 unsigned Miner::s_dagLoadIndex = 0;
@@ -33,7 +34,7 @@ DeviceDescriptor Miner::getDescriptor()
 void Miner::setWork(WorkPackage const& _work)
 {
     {
-        std::scoped_lock l(x_work);
+        std::lock_guard<std::mutex> l(x_work);
 
         // Void work if this miner is paused
         if (paused())
@@ -55,7 +56,7 @@ void Miner::setWork(WorkPackage const& _work)
 
 void Miner::pause(MinerPauseEnum what)
 {
-    std::scoped_lock l(x_pause);
+    std::lock_guard<std::mutex> l(x_pause);
     m_pauseFlags.set(what);
     m_work.header = h256();
     kick_miner();
@@ -63,19 +64,19 @@ void Miner::pause(MinerPauseEnum what)
 
 bool Miner::paused()
 {
-    std::scoped_lock l(x_pause);
+    std::lock_guard<std::mutex> l(x_pause);
     return m_pauseFlags.any();
 }
 
 bool Miner::pauseTest(MinerPauseEnum what)
 {
-    std::scoped_lock l(x_pause);
+    std::lock_guard<std::mutex> l(x_pause);
     return m_pauseFlags.test(what);
 }
 
 std::string Miner::pausedString()
 {
-    std::scoped_lock l(x_pause);
+    std::lock_guard<std::mutex> l(x_pause);
     std::string retVar;
     if (m_pauseFlags.any())
     {
@@ -104,7 +105,7 @@ std::string Miner::pausedString()
 
 void Miner::resume(MinerPauseEnum fromwhat)
 {
-    std::scoped_lock l(x_pause);
+    std::lock_guard<std::mutex> l(x_pause);
     m_pauseFlags.reset(fromwhat);
     // if (!m_pauseFlags.any())
     //{
@@ -138,7 +139,7 @@ bool Miner::initEpoch()
     {
         while (s_dagLoadIndex < m_index)
         {
-            std::unique_lock l(x_work);
+            std::unique_lock<std::mutex> l(x_work);
             m_dag_loaded_signal.wait_for(l, std::chrono::seconds(3));
         }
         if (shouldStop())
@@ -165,7 +166,7 @@ bool Miner::initEpoch()
 
 WorkPackage Miner::work() const
 {
-    std::scoped_lock l(x_work);
+    std::lock_guard<std::mutex> l(x_work);
     return m_work;
 }
 
@@ -199,4 +200,5 @@ bool Miner::dropThreadPriority()
 #endif
 }
 
-}  // namespace dev::eth
+}  // namespace eth
+}  // namespace dev

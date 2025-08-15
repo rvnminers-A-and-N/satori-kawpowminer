@@ -24,7 +24,6 @@
 #include <condition_variable>
 #include <list>
 #include <numeric>
-#include <optional>
 #include <string>
 
 //#include "EthashAux.h"
@@ -36,6 +35,7 @@
 #include <boost/format.hpp>
 
 #include <libcrypto/ethash.hpp>
+#include <libcrypto/optional_compat.hpp>
 
 #define DAG_LOAD_MODE_PARALLEL 0
 #define DAG_LOAD_MODE_SEQUENTIAL 1
@@ -43,7 +43,8 @@
 
 extern boost::asio::io_service g_io_service;
 
-namespace dev::eth
+namespace dev {
+namespace eth
 {
 enum class DeviceTypeEnum
 {
@@ -334,8 +335,8 @@ struct WorkPackage
             return boundary;
     }
 
-    std::optional<uint32_t> epoch;
-    std::optional<uint32_t> block;
+    optional_t<uint32_t> epoch;
+    optional_t<uint32_t> block;
 
     uint64_t startNonce = 0;
     uint16_t exSizeBytes = 0;
@@ -520,6 +521,7 @@ private:
     std::atomic<bool> m_hashRateUpdate = {false};
 };
 
-}  // namespace dev::eth
+}  // namespace eth
+}  // namespace dev
 
 #endif  // !LIBCRYPTO_MINER_H_

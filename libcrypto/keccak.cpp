@@ -549,7 +549,8 @@ static inline ALWAYS_INLINE void keccak(
     const size_t block_size{(1600 - bits * 2) / 8};
     const size_t block_word64s{block_size / word64_size};
 
-    std::basic_string_view<uint8_t> input_view{input, input_size};
+    const uint8_t* input_ptr = input;
+    size_t remaining = input_size;
 
     uint64_t state[25]{0};
     uint64_t* state_iterator{state};
@@ -557,27 +558,29 @@ static inline ALWAYS_INLINE void keccak(
     uint8_t* last_word_iter = reinterpret_cast<uint8_t*>(&last_word);
 
     // Consume all input data
-    while (input_view.size())
+    while (remaining)
     {
-        if (input_view.size() >= block_size)
+        if (remaining >= block_size)
         {
             for (size_t i{0}; i < block_word64s; i++)
             {
-                state[i] ^= load_le(input_view.data());
-                input_view.remove_prefix(word64_size);
+                state[i] ^= load_le(input_ptr);
+                input_ptr += word64_size;
+                remaining -= word64_size;
             }
             keccakf1600_best(state);
             continue;
         }
-        if (input_view.size() >= word64_size)
+        if (remaining >= word64_size)
         {
-            *state_iterator ^= load_le(input_view.data());
+            *state_iterator ^= load_le(input_ptr);
             ++state_iterator;
-            input_view.remove_prefix(word64_size);
+            input_ptr += word64_size;
+            remaining -= word64_size;
             continue;
         }
-        __builtin_memcpy(last_word_iter, input_view.data(), input_view.size());
-        last_word_iter += input_view.size();
+        __builtin_memcpy(last_word_iter, input_ptr, remaining);
+        last_word_iter += remaining;
         break;
     }
 

@@ -289,7 +289,7 @@ void CPUMiner::workLoop()
         bool new_work_expected{true};
         if (!m_new_work.compare_exchange_strong(new_work_expected, false))
         {
-            std::unique_lock l(x_work);
+            std::unique_lock<std::mutex> l(x_work);
             m_new_work_signal.wait_for(l, std::chrono::milliseconds(50));
             continue;
         }

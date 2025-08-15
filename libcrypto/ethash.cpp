@@ -374,10 +374,10 @@ hash256 calculate_seed_from_epoch(uint32_t epoch_number) noexcept
     return seed;
 }
 
-std::optional<uint32_t> calculate_epoch_from_seed(const hash256& seed) noexcept
+optional_t<uint32_t> calculate_epoch_from_seed(const hash256& seed) noexcept
 {
     static constexpr uint32_t num_tries{30000};
-    static thread_local std::optional<uint32_t> cached_epoch_number{};
+    static thread_local optional_t<uint32_t> cached_epoch_number{};
     static thread_local hash256 cached_epoch_seed{};
 
     // Do we have something in cache ?
@@ -412,7 +412,7 @@ std::optional<uint32_t> calculate_epoch_from_seed(const hash256& seed) noexcept
 
     // No matches found
     cached_epoch_number.reset();
-    return std::nullopt;
+    return NULLOPT_T;
 }
 
 uint32_t calculate_epoch_from_block_num(const uint64_t block_num) noexcept

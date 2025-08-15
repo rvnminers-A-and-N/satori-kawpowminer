@@ -53,7 +53,7 @@ void EthGetworkClient::connect()
         std::string authentication{m_conn->User() + ":" + m_conn->Pass()};
         size_t encoded_len{boost::beast::detail::base64::encoded_size(authentication.length())};
         m_base64_auth.resize(encoded_len, '\0');
-        boost::beast::detail::base64::encode(m_base64_auth.data(), authentication.data(), authentication.length());
+        boost::beast::detail::base64::encode(const_cast<char*>(m_base64_auth.data()), authentication.data(), authentication.length());
     }
 
     // Prevent unnecessary and potentially dangerous recursion

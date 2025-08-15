@@ -333,7 +333,7 @@ void CLMiner::workLoop()
             const WorkPackage next = work();
             if (!next)
             {
-                std::unique_lock l(x_work);
+                std::unique_lock<std::mutex> l(x_work);
                 m_new_work_signal.wait_for(l, std::chrono::milliseconds(50));
                 continue;
             }
